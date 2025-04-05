@@ -1,2 +1,3 @@
 # pit
-Pit stands for "Python Information Tracker". Git-alike program, made with python.
+
+Pit significa "Python Information Tracker". Git-alike, hecho en Python.
