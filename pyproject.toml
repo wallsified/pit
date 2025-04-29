@@ -5,5 +5,6 @@ description = "Pit significa 'Python Information Tracker'. Git-alike, hecho en P
 requires-python = ">=3.12"
 dependencies = [
     "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
     "ruff>=0.11.4",
 ]
