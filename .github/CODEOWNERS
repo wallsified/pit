@@ -1,1 +1,6 @@
 # Lista global de codeowners
+* @wallsified @Gabriela164 @IsaacAE @jatziri2 @branndo
+
+# Archivos de Configuración
+.yaml @wallsified
+.toml @wallsified
