@@ -13,7 +13,6 @@ def calculate_hash(content: bytes) -> str:
     Returns:
         str: Hash SHA-256 del contenido.
     """
-    """Calcula el hash SHA-256 del contenido de un archivo."""
     return hashlib.sha256(content).hexdigest()
 
 
