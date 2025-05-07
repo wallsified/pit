@@ -4,6 +4,16 @@ version = "1.0.0"
 description = "Pit significa 'Python Information Tracker'. Git-alike, hecho en Python"
 requires-python = ">=3.12"
 dependencies = [
+    "click>=8.1.8",
     "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
     "ruff>=0.11.4",
 ]
+readme = "README.md"
+
+[dependency-groups]
+dev = []
+
+
+[project.scripts]
+pit = "pit.cli.init:cli"  # Ruta al comando Click

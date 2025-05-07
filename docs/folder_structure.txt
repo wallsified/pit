@@ -1,0 +1,18 @@
+pit/
+├── src/
+│   └── pit/                  # Paquete Python
+│       ├── __init__.py       # Archivo vacío (o con versión/imports clave)
+│       ├── core/             # Subpaquete (también con __init__.py)
+│       │   ├── __init__.py
+│       │   └── version.py    # Ej: clase Version
+│       ├── cli/              # Subpaquete
+│       │   ├── __init__.py
+│       │   └── main.py       # Definición de comandos Click
+│       └── storage/          # Subpaquete
+│           ├── __init__.py
+│           └── database.py   # Manejo de SQLite
+├── tests/                    # Tests
+│   ├── __init__.py           # Solo si se necesitan imports entre tests
+│   ├── unit/
+│   └── integration/
+└── docs/                     # Documentación (archivos sueltos)
