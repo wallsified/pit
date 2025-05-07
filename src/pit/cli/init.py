@@ -1,6 +1,10 @@
 import click
+
+from ..storage.add import add_file
 from ..storage.init import init_repo
 from pathlib import Path
+
+from ..storage.remove import remove_file
 
 
 @click.group()
@@ -22,19 +26,39 @@ def init():
     init_repo(repo_path)
 
 
-# WIP
+# El nombre de los argumentos debe ser el mismo que el nombre del argumento
+# en la función, de lo contrario no se pasará el argumento a la función.
 @cli.command()
-@click.option("--file", help="Ruta del archivo a agregar")
+@click.argument("file", required=True)
 def add(file):
     """
-    Agrega un archivo al repositorio de Pit.
+    Agrega un archivo al area de staging de Pit.
     """
     if file:
         file_path = Path(file)
         if file_path.exists():
-            # Aquí iría la lógica para agregar el archivo al repositorio
-            click.echo(f"Archivo {file} agregado al repositorio.")
+            repo_path = Path.cwd()
+            add_file(repo_path, file_path)
+            click.echo(f"Archivo {file} agregado al repositorio.\n")
+        else:
+            click.echo(f"El archivo {file} no existe.\n")
+    else:
+        click.echo("Por favor, proporciona la ruta del archivo a agregar.")
+
+
+@cli.command()
+@click.argument("file", required=True)
+def remove(file):
+    """
+    Borra un archivo del area de staging de Pit.
+    """
+    if file:
+        file_path = Path(file)
+        if file_path.exists():
+            repo_path = Path.cwd()
+            remove_file(repo_path, file_path)
+            click.echo(f"Archivo {file} eliminado del repositorio.\n")
         else:
             click.echo(f"El archivo {file} no existe.")
     else:
-        click.echo("Por favor, proporciona la ruta del archivo a agregar.")
+        click.echo("Por favor, proporciona la ruta del archivo a eliminar.\n")
