@@ -2,6 +2,7 @@ import click
 
 from ..storage.add import add_file
 from ..storage.init import init_repo
+from ..core.status import get_status
 from pathlib import Path
 
 from ..storage.remove import remove_file
@@ -62,3 +63,12 @@ def remove(file):
             click.echo(f"El archivo {file} no existe.")
     else:
         click.echo("Por favor, proporciona la ruta del archivo a eliminar.\n")
+
+
+@cli.command()
+def status():
+    """
+    Muestra el estado del repositorio.
+    """
+    repo_path = Path.cwd()
+    get_status(repo_path)
