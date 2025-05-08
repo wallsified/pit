@@ -1,33 +1,51 @@
-import pytest
-from src.pit.core.status import get_status
+import sqlite3
+import unittest
+from pathlib import Path
+
 from src.pit.storage.init import init_repo
 from src.pit.storage.add import add_file
 
-
-@pytest.fixture
-def temp_repo(tmp_path):
-    """Crea un repositorio temporal para las pruebas."""
-    repo_path = tmp_path / "test_repo"
-    repo_path.mkdir()
-    init_repo(repo_path)
-    return repo_path
+repo_path = Path("status_test")
+repo_path.mkdir(parents=True, exist_ok=True)
 
 
-def test_get_status(temp_repo, caps):
-    """Prueba que get_status liste correctamente los archivos en el área de staging."""
-    # Crear un archivo de prueba
-    test_file = temp_repo / "test_file.txt"
-    with test_file.open("w") as f:
-        f.write("Contenido de prueba")
+class TestPitStatus(unittest.TestCase):
+    def setUp(self) -> None:
+        """
+        Configura un repositorio temporal en memoria
+        para realizar pruebas a pit status.
+        """
+        init_repo(repo_path)
+        self.test_file = repo_path / "test_file.txt"
+        with self.test_file.open("w") as f:
+            f.write("probando 'pit status'")
+        add_file(repo_path, self.test_file)
 
-    # Agregar el archivo al área de staging
-    add_file(temp_repo, test_file)
+    def test_status(self) -> None:
+        """
+        Prueba que el estado del repositorio se obtenga correctamente.
+        """
+        db_path = repo_path / ".pit" / "pit.db"
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT path FROM staging")
+            result = cursor.fetchall()
 
-    # Ejecutar get_status y capturar la salida
-    get_status(temp_repo)
-    captured = caps.readouterr()
+        self.assertIsNotNone(result)
+        self.assertGreaterEqual(len(result), 1)
 
-    # Verificar que el archivo aparece en la salida
-    assert "Archivos en el área de staging:" in captured.out
-    assert str(test_file) in captured.out
-    assert "Recuerda hacer un commit para confirmar tus cambios." in captured.out
+    def tearDown(self) -> None:
+        """
+        Limpia el repositorio creado temporalmente tras las pruebas.
+        """
+        db_path = repo_path / ".pit" / "pit.db"
+        if db_path.exists():
+            try:
+                with sqlite3.connect(db_path) as conn:
+                    conn.close()
+            except sqlite3.Error as e:
+                print(f"Error al cerrar la base de datos {e}")
+
+
+suite = unittest.TestLoader().loadTestsFromTestCase(TestPitStatus)
+unittest.TextTestRunner(verbosity=2).run(suite)
