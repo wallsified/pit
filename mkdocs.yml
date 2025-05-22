@@ -1,0 +1,26 @@
+site_name: "Pit: Python Information Tracker"
+site_author: "wallsified"
+repo_url: https://github.com/wallsified/pit
+repo_name: "wallsified/pit"
+copyright: Copyright © 2025 wallsified
+
+nav:
+  - Home: index.md
+  - About: about.md
+
+theme:
+  name: terminal
+  palette: dark
+  locale: es
+  include_sidebar: true
+  features:
+    - revision.date
+    - revision.history
+    - footer.prev_next
+    - navigation.side.indexes
+
+
+plugins:
+  - search:
+      lang: es
+  - git-revision-date:
